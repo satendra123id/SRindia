@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SRindia Admin - Live Control</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body { background-color: #f0f2f5; color: #333; min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 20px; }
+        
+        /* Login Box */
+        #loginBox { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 100%; max-width: 400px; text-align: center; margin-top: 50px; }
+        input, textarea { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; font-size: 15px; }
+        button { width: 100%; padding: 12px; background: #6610f2; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; margin-top: 10px; }
+        
+        /* Dashboard Area */
+        #adminDashboard { display: none; width: 100%; max-width: 800px; }
+        .card { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 20px; }
+        .course-item { display: flex; justify-content: space-between; align-items: center; padding: 15px; border-bottom: 1px solid #eee; }
+        .btn-delete { background: #ff4d4d; width: auto; padding: 5px 15px; font-size: 13px; }
+        .btn-logout { background: #555; width: auto; margin-bottom: 20px; }
+    </style>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+</head>
+<body>
+
+    <div id="loginBox">
+        <h2 style="color:#6610f2">SRindia Admin</h2>
+        <input type="email" id="adminEmail" placeholder="Email Address">
+        <input type="password" id="adminPass" placeholder="Password">
+        <button onclick="login()">Login to Dashboard</button>
+        <p id="loginError" style="color:red; display:none; margin-top:10px;">Login failed!</p>
+    </div>
+
+    <div id="adminDashboard">
+        <button class="btn-logout" onclick="logout()">Logout</button>
+        
+        <div class="card">
+            <h3>Add New Course (Live)</h3>
+            <input type="text" id="cTitle" placeholder="Course Title">
+            <input type="text" id="cPrice" placeholder="Price (₹)">
+            <input type="text" id="cOldPrice" placeholder="Old Price (₹)">
+            <input type="text" id="cImg" placeholder="Image URL (Link)">
+            <textarea id="cDesc" placeholder="Small Description..."></textarea>
+            <button style="background:#28a745" onclick="addCourse()">+ Add to Website</button>
+        </div>
+
+        <div class="card">
+            <h3>Active Courses on Website</h3>
+            <div id="coursesContainer">Loading courses...</div>
+        </div>
+    </div>
+
+    <script>
+        // FIREBASE CONFIG (Sitaram's Config)
+        const firebaseConfig = {
+            apiKey: "AIzaSyBs4mFioKL9uztdSU90-iFXvvBU-8K15Mg",
+            authDomain: "srindia-1f973.firebaseapp.com",
+            databaseURL: "https://srindia-1f973-default-rtdb.firebaseio.com",
+            projectId: "srindia-1f973",
+            storageBucket: "srindia-1f973.firebasestorage.app",
+            messagingSenderId: "1046746667707",
+            appId: "1:1046746667707:web:aba400a8ad19fe9f49a79e"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.database();
+
+        // 1. Auth Listener
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                document.getElementById('loginBox').style.display = 'none';
+                document.getElementById('adminDashboard').style.display = 'block';
+                fetchCourses();
+            } else {
+                document.getElementById('loginBox').style.display = 'block';
+                document.getElementById('adminDashboard').style.display = 'none';
+            }
+        });
+
+        // 2. Login Function
+        function login() {
+            const email = document.getElementById('adminEmail').value;
+            const pass = document.getElementById('adminPass').value;
+            auth.signInWithEmailAndPassword(email, pass).catch(e => alert(e.message));
+        }
+
+        // 3. Logout
+        function logout() { auth.signOut(); }
+
+        // 4. Add Course to Firebase
+        function addCourse() {
+            const title = document.getElementById('cTitle').value;
+            const price = document.getElementById('cPrice').value;
+            const oldPrice = document.getElementById('cOldPrice').value;
+            const img = document.getElementById('cImg').value;
+            const desc = document.getElementById('cDesc').value;
+
+            if(!title || !price) return alert("Title and Price are required!");
+
+            db.ref('courses').push({ title, price, oldPrice, img, desc })
+            .then(() => {
+                alert("Course added Live!");
+                document.querySelectorAll('input, textarea').forEach(i => i.value = '');
+            });
+        }
+
+        // 5. Fetch and Delete Courses
+        function fetchCourses() {
+            db.ref('courses').on('value', snapshot => {
+                const container = document.getElementById('coursesContainer');
+                container.innerHTML = '';
+                snapshot.forEach(child => {
+                    const data = child.val();
+                    container.innerHTML += `
+                        <div class="course-item">
+                            <span><strong>${data.title}</strong> (₹${data.price})</span>
+                            <button class="btn-delete" onclick="deleteCourse('${child.key}')">Delete</button>
+                        </div>`;
+                });
+            });
+        }
+
+        function deleteCourse(id) {
+            if(confirm("Are you sure?")) db.ref('courses/' + id).remove();
+        }
+    </script>
+</body>
+</html>
+
