@@ -3,60 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SRindia - Premium Tech Education</title>
+    <title>SRindia - Best Mobile Tech Courses</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; scroll-behavior: smooth; }
-        body { background-color: #f4f7f6; color: #333; line-height: 1.6; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; scroll-behavior: smooth; }
+        body { background-color: #f8f9fa; color: #333; line-height: 1.5; }
         
-        /* Premium Navbar */
-        nav { display: flex; justify-content: space-between; align-items: center; padding: 15px 8%; background: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.08); position: sticky; top: 0; z-index: 1000; }
-        .logo { font-size: 26px; font-weight: 800; color: #6610f2; letter-spacing: 1px; text-transform: uppercase; }
-        .nav-links { display: flex; gap: 30px; }
-        .nav-links a { text-decoration: none; color: #444; font-weight: 600; font-size: 16px; transition: 0.3s; }
-        .nav-links a:hover { color: #6610f2; }
+        /* Fixed Mobile Header */
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 15px 5%; background: #fff; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000; }
+        .logo { font-size: 24px; font-weight: 800; color: #6610f2; }
+        .nav-links { display: flex; gap: 15px; }
+        .nav-links a { text-decoration: none; color: #333; font-weight: 600; font-size: 14px; }
 
-        /* Modern Hero Section */
-        .hero { text-align: center; padding: 140px 20px; background: linear-gradient(135deg, #6610f2 0%, #0d6efd 100%); color: white; clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%); }
-        .hero h1 { font-size: 52px; margin-bottom: 20px; font-weight: 900; letter-spacing: -1px; }
-        .hero p { font-size: 20px; margin-bottom: 35px; max-width: 750px; margin-left: auto; margin-right: auto; opacity: 0.9; }
-        .explore-btn { background: #ffc107; color: #222; padding: 16px 35px; font-size: 18px; font-weight: 700; text-decoration: none; border-radius: 50px; transition: 0.3s; display: inline-block; box-shadow: 0 4px 15px rgba(255, 193, 7, 0.4); }
-        .explore-btn:hover { background: #e0a800; transform: translateY(-3px); box-shadow: 0 6px 20px rgba(255, 193, 7, 0.5); }
+        /* Mobile Responsive Hero */
+        .hero { text-align: center; padding: 100px 20px; background: linear-gradient(135deg, #6610f2, #0d6efd); color: white; }
+        .hero h1 { font-size: 32px; margin-bottom: 15px; font-weight: 800; line-height: 1.2; }
+        .hero p { font-size: 16px; margin-bottom: 25px; opacity: 0.9; }
+        .explore-btn { background: #ffc107; color: #222; padding: 14px 28px; font-size: 16px; font-weight: 700; text-decoration: none; border-radius: 50px; display: inline-block; }
 
-        /* Courses Grid */
-        .courses-section { padding: 100px 8%; text-align: center; }
-        .courses-section h2 { font-size: 38px; margin-bottom: 60px; color: #232d39; position: relative; display: inline-block; }
-        .courses-section h2::after { content: ''; width: 60%; height: 4px; background: #6610f2; position: absolute; bottom: -10px; left: 20%; border-radius: 2px; }
+        /* Course Grid - Fixed for 3 Courses & Mobile */
+        .courses-section { padding: 60px 5%; text-align: center; }
+        .courses-section h2 { font-size: 28px; margin-bottom: 40px; color: #222; }
         
-        .course-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 35px; max-width: 1250px; margin: auto; }
+        .course-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+            gap: 25px; 
+            max-width: 1200px; 
+            margin: auto; 
+        }
         
-        .course-card { background: #fff; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.05); transition: 0.4s ease; text-align: left; display: flex; flex-direction: column; border: 1px solid #eee; }
-        .course-card:hover { transform: translateY(-12px); box-shadow: 0 20px 40px rgba(0,0,0,0.12); }
-        .course-img { width: 100%; height: 210px; object-fit: cover; }
-        .course-content { padding: 30px; flex-grow: 1; display: flex; flex-direction: column; }
-        .course-category { color: #6610f2; font-size: 13px; font-weight: 800; text-transform: uppercase; margin-bottom: 12px; letter-spacing: 1px; }
-        .course-title { font-size: 23px; margin-bottom: 15px; color: #222; font-weight: 700; }
-        .course-desc { color: #666; font-size: 15px; margin-bottom: 25px; flex-grow: 1; }
-        .course-price { font-size: 26px; font-weight: 800; color: #28a745; margin-bottom: 25px; display: flex; align-items: center; gap: 12px; }
-        .original-price { font-size: 17px; color: #bbb; text-decoration: line-through; font-weight: 500; }
+        .course-card { background: #fff; border-radius: 15px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.05); text-align: left; display: flex; flex-direction: column; border: 1px solid #eee; }
+        .course-img { width: 100%; height: 180px; object-fit: cover; }
+        .course-content { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; }
+        .course-title { font-size: 20px; margin-bottom: 10px; color: #222; font-weight: 700; }
+        .course-desc { color: #666; font-size: 14px; margin-bottom: 20px; flex-grow: 1; }
+        .course-price { font-size: 22px; font-weight: 800; color: #28a745; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
+        .original-price { font-size: 15px; color: #bbb; text-decoration: line-through; }
         
-        /* WhatsApp Button */
-        .buy-btn { display: flex; justify-content: center; align-items: center; gap: 12px; width: 100%; background: #25D366; color: white; padding: 16px; text-decoration: none; font-size: 18px; font-weight: 700; border-radius: 12px; transition: 0.3s; border: none; cursor: pointer; }
-        .buy-btn:hover { background: #1ebe57; transform: scale(1.02); }
-        .wa-icon { width: 22px; height: 22px; fill: white; }
+        /* Mobile Friendly WhatsApp Button */
+        .buy-btn { display: flex; justify-content: center; align-items: center; gap: 10px; width: 100%; background: #25D366; color: white; padding: 14px; text-decoration: none; font-size: 16px; font-weight: 700; border-radius: 10px; border: none; cursor: pointer; }
+        .buy-btn:active { transform: scale(0.98); }
 
-        /* Professional Footer */
-        footer { background: #1a1f25; color: white; text-align: center; padding: 60px 20px; margin-top: 40px; }
-        .footer-logo { font-size: 28px; font-weight: 800; color: #fff; margin-bottom: 15px; }
-        .footer-logo span { color: #1abc9c; }
-        .copyright { margin-top: 25px; font-size: 15px; color: #94a3b8; border-top: 1px solid #334155; padding-top: 25px; }
-        .dev-name { color: #1abc9c; font-weight: 700; text-decoration: none; }
+        /* Footer */
+        footer { background: #1a1f25; color: white; text-align: center; padding: 40px 20px; margin-top: 30px; font-size: 14px; }
+        .dev-name { color: #1abc9c; font-weight: 700; }
         
-        /* Mobile View */
-        @media (max-width: 768px) {
-            nav { padding: 15px 5%; }
-            .hero { padding: 100px 20px; }
-            .hero h1 { font-size: 34px; }
-            .courses-section { padding: 60px 20px; }
+        /* Mobile specific media query */
+        @media (max-width: 480px) {
+            .hero h1 { font-size: 28px; }
+            .course-grid { grid-template-columns: 1fr; } /* Force 1 column on small phones */
+            nav { padding: 15px 10px; }
         }
     </style>
 </head>
@@ -65,47 +61,48 @@
     <nav>
         <div class="logo">SRindia</div>
         <div class="nav-links">
-            <a href="#home">Home</a>
             <a href="#courses">Courses</a>
-            <a href="#about">About Us</a>
+            <a href="#about">About</a>
         </div>
     </nav>
 
-    <header id="home" class="hero">
-        <h1>Unlock Your Tech Potential</h1>
-        <p>Premium courses on Cybersecurity, AI, and Web Development. Start your journey with Sitaram Lodhi and master the skills that matter today.</p>
-        <a href="#courses" class="explore-btn">Get Started Now</a>
+    <header class="hero">
+        <h1>Learn Skills, Build Future</h1>
+        <p>Premium mobile-focused tech courses by Sitaram Lodhi.</p>
+        <a href="#courses" class="explore-btn">Start Learning</a>
     </header>
 
     <section id="courses" class="courses-section">
-        <h2>Premium Learning Programs</h2>
+        <h2>Our Top 3 Courses</h2>
         <div class="course-grid">
             
             <div class="course-card">
                 <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=800&q=80" alt="Cybersecurity" class="course-img">
                 <div class="course-content">
-                    <span class="course-category">Cybersecurity</span>
-                    <h3 class="course-title">Ethical Hacking & Termux Mastery</h3>
-                    <p class="course-desc">Mobile hacking environment setup karein aur network security ke advance concepts seekhein bina root ke.</p>
+                    <h3 class="course-title">Ethical Hacking Mastery</h3>
+                    <p class="course-desc">Mobile Termux environment setup aur network security basic se advance tak seekhein.</p>
                     <div class="course-price">₹499 <span class="original-price">₹999</span></div>
-                    <button class="buy-btn" onclick="buyViaWhatsApp('Ethical Hacking & Termux Mastery', '499')">
-                        <svg class="wa-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zM223.9 413.3c-33.1 0-65.5-8.9-94-25.7l-6.7-4-69.8 18.3L72 334.1l-4.4-7.1c-19-30.2-29-65.2-29-99.2 0-103.8 84.5-188.4 188.5-188.4 53.6 0 103.7 21.1 141.4 58.7 37.8 37.7 58.5 88 58.5 141.6 0 103.9-84.5 188.4-188.5 188.4zm103.5-141.5c-5.7-2.8-33.7-16.6-38.9-18.5-5.2-1.9-9-2.8-12.8 2.8-3.8 5.7-14.7 18.5-18 22.3-3.3 3.8-6.6 4.3-12.3 1.4-5.7-2.8-24-8.9-45.8-28.4-16.9-15.1-28.3-33.7-31.6-39.4-3.3-5.7-.4-8.8 2.5-11.6 2.6-2.6 5.7-6.6 8.5-9.9 2.8-3.3 3.8-5.7 5.7-9.5 1.9-3.8.9-7.1-.4-10.1-1.3-2.8-12.8-30.9-17.5-42.3-4.6-11.2-9.2-9.7-12.8-9.9-3.3-.2-7.1-.2-10.9-.2-3.8 0-10 1.4-15.2 7.1-5.2 5.7-20 19.6-20 47.8 0 28.2 20.4 55.4 23.3 59.2 2.8 3.8 40.4 61.6 97.9 86.4 13.7 5.9 24.4 9.4 32.7 12 13.8 4.4 26.4 3.8 36.3 2.3 11.2-1.7 33.7-13.7 38.4-27 4.7-13.3 4.7-24.6 3.3-27-1.3-2.4-5.2-3.8-10.9-6.6z"/></svg>
-                        Buy on WhatsApp
-                    </button>
+                    <button class="buy-btn" onclick="buyViaWhatsApp('Ethical Hacking Mastery', '499')">Buy on WhatsApp</button>
                 </div>
             </div>
 
             <div class="course-card">
-                <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=800&q=80" alt="AI Mastery" class="course-img">
+                <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=800&q=80" alt="AI" class="course-img">
                 <div class="course-content">
-                    <span class="course-category">Artificial Intelligence</span>
-                    <h3 class="course-title">AI Content Creation Mastery</h3>
-                    <p class="course-desc">AI tools ka istemal karke high-quality scripts aur videos kaise banayein, poora step-by-step guide.</p>
+                    <h3 class="course-title">AI Content Creation</h3>
+                    <p class="course-desc">AI tools ka use karke high-quality digital scripts aur video content banana seekhein.</p>
                     <div class="course-price">₹299 <span class="original-price">₹599</span></div>
-                    <button class="buy-btn" onclick="buyViaWhatsApp('AI Content Creation Mastery', '299')">
-                        <svg class="wa-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zM223.9 413.3c-33.1 0-65.5-8.9-94-25.7l-6.7-4-69.8 18.3L72 334.1l-4.4-7.1c-19-30.2-29-65.2-29-99.2 0-103.8 84.5-188.4 188.5-188.4 53.6 0 103.7 21.1 141.4 58.7 37.8 37.7 58.5 88 58.5 141.6 0 103.9-84.5 188.4-188.5 188.4zm103.5-141.5c-5.7-2.8-33.7-16.6-38.9-18.5-5.2-1.9-9-2.8-12.8 2.8-3.8 5.7-14.7 18.5-18 22.3-3.3 3.8-6.6 4.3-12.3 1.4-5.7-2.8-24-8.9-45.8-28.4-16.9-15.1-28.3-33.7-31.6-39.4-3.3-5.7-.4-8.8 2.5-11.6 2.6-2.6 5.7-6.6 8.5-9.9 2.8-3.3 3.8-5.7 5.7-9.5 1.9-3.8.9-7.1-.4-10.1-1.3-2.8-12.8-30.9-17.5-42.3-4.6-11.2-9.2-9.7-12.8-9.9-3.3-.2-7.1-.2-10.9-.2-3.8 0-10 1.4-15.2 7.1-5.2 5.7-20 19.6-20 47.8 0 28.2 20.4 55.4 23.3 59.2 2.8 3.8 40.4 61.6 97.9 86.4 13.7 5.9 24.4 9.4 32.7 12 13.8 4.4 26.4 3.8 36.3 2.3 11.2-1.7 33.7-13.7 38.4-27 4.7-13.3 4.7-24.6 3.3-27-1.3-2.4-5.2-3.8-10.9-6.6z"/></svg>
-                        Buy on WhatsApp
-                    </button>
+                    <button class="buy-btn" onclick="buyViaWhatsApp('AI Content Creation', '299')">Buy on WhatsApp</button>
+                </div>
+            </div>
+
+            <div class="course-card">
+                <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800&q=80" alt="Web Dev" class="course-img">
+                <div class="course-content">
+                    <h3 class="course-title">Web Dev & Monetization</h3>
+                    <p class="course-desc">Apni website banayein aur use affiliate marketing se monetize karna seekhein.</p>
+                    <div class="course-price">₹799 <span class="original-price">₹1499</span></div>
+                    <button class="buy-btn" onclick="buyViaWhatsApp('Web Dev & Monetization', '799')">Buy on WhatsApp</button>
                 </div>
             </div>
 
@@ -113,22 +110,18 @@
     </section>
 
     <footer id="about">
-        <div class="footer-logo">SR<span>india</span></div>
-        <p style="color: #94a3b8; max-width: 500px; margin: 0 auto;">Building a smarter generation with accessible and high-quality tech education.</p>
-        
-        <div class="copyright">
-            &copy; 2026 SRindia. All Rights Reserved. <br>
-            Developed & Managed by <a href="#" class="dev-name">Sitaram Lodhi</a>
-        </div>
+        <p>&copy; 2026 SRindia. All Rights Reserved.</p>
+        <p>Developed & Managed by <span class="dev-name">Sitaram Lodhi</span></p>
     </footer>
 
     <script>
-        function buyViaWhatsApp(courseName, price) {
+        function buyViaWhatsApp(name, price) {
             const phoneNumber = "919399687115"; 
-            const message = `Hello Sitaram, mujhe aapka '${courseName}' course kharidna hai. Iska price ₹${price} hai. Kripya mujhe payment details bhejein.`;
-            const encodedMessage = encodeURIComponent(message);
-            window.open(`https://wa.me/${phoneNumber}?text=${encodedMessage}`, '_blank');
+            const message = encodeURIComponent(`Hello Sitaram, mujhe aapka '${name}' course kharidna hai (₹${price}). Kripya details bhejein.`);
+            window.open(`https://wa.me/${phoneNumber}?text=${message}`, '_blank');
         }
     </script>
 </body>
 </html>
+
+Aapka slide deck taiyar hai aur website code bhi theek kar diya gaya hai! Mobile par check karein, ab courses bilkul "fit" aur sahi dikhenge. Let me know if you need anything else!
