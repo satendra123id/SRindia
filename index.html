@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SRindia - Premium Tech Education</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; scroll-behavior: smooth; }
+        body { background-color: #f8f9fa; color: #333; }
+        
+        /* Navbar */
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 50px; background: #fff; box-shadow: 0 4px 6px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 1000; }
+        .logo { font-size: 28px; font-weight: bold; color: #6610f2; letter-spacing: 1px; }
+        .nav-links { display: flex; gap: 20px; align-items: center; }
+        .nav-links a { text-decoration: none; color: #333; font-weight: bold; transition: 0.3s; }
+        .nav-links a:hover { color: #6610f2; }
+        .login-btn { background: #6610f2; color: white; padding: 10px 20px; border-radius: 5px; text-decoration: none; font-weight: bold; transition: 0.3s; border: none; cursor: pointer; }
+        .login-btn:hover { background: #520dc2; color: white; }
+
+        /* Hero Section */
+        .hero { text-align: center; padding: 120px 20px; background: linear-gradient(135deg, #6610f2, #0d6efd); color: white; }
+        .hero h1 { font-size: 50px; margin-bottom: 20px; font-weight: 800; }
+        .hero p { font-size: 20px; margin-bottom: 30px; max-width: 700px; margin-left: auto; margin-right: auto; line-height: 1.6; }
+        .explore-btn { background: #ffc107; color: #333; padding: 15px 30px; font-size: 18px; font-weight: bold; text-decoration: none; border-radius: 50px; transition: 0.3s; display: inline-block; }
+        .explore-btn:hover { background: #e0a800; transform: scale(1.05); }
+
+        /* Courses Section */
+        .courses-section { padding: 80px 50px; text-align: center; }
+        .courses-section h2 { font-size: 36px; margin-bottom: 50px; color: #2c3e50; }
+        .course-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; max-width: 1200px; margin: auto; }
+        
+        .course-card { background: #fff; border-radius: 15px; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.08); transition: 0.3s; text-align: left; position: relative; }
+        .course-card:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(0,0,0,0.15); }
+        .course-img { width: 100%; height: 200px; background-color: #ddd; object-fit: cover; }
+        .course-content { padding: 25px; }
+        .course-category { color: #0d6efd; font-size: 14px; font-weight: bold; text-transform: uppercase; margin-bottom: 10px; display: block; }
+        .course-title { font-size: 22px; margin-bottom: 15px; color: #333; }
+        .course-desc { color: #666; font-size: 15px; line-height: 1.5; margin-bottom: 20px; }
+        .course-price { font-size: 24px; font-weight: bold; color: #28a745; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+        .original-price { font-size: 16px; color: #999; text-decoration: line-through; }
+        
+        .buy-btn { display: block; width: 100%; text-align: center; background: #28a745; color: white; padding: 15px; text-decoration: none; font-size: 18px; font-weight: bold; border-radius: 8px; transition: 0.3s; border: none; cursor: pointer; }
+        .buy-btn:hover { background: #218838; }
+
+        /* Footer */
+        footer { background: #2c3e50; color: white; text-align: center; padding: 30px 20px; margin-top: 50px; }
+        
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            nav { padding: 15px 20px; flex-direction: column; gap: 15px; }
+            .hero { padding: 80px 20px; }
+            .hero h1 { font-size: 36px; }
+            .courses-section { padding: 50px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">SRindia</div>
+        <div class="nav-links">
+            <a href="#home">Home</a>
+            <a href="#courses">Courses</a>
+            <a href="#about">About</a>
+            <a href="admin.html" class="login-btn">Admin Login</a>
+        </div>
+    </nav>
+
+    <header id="home" class="hero">
+        <h1>Master the Future of Tech</h1>
+        <p>Learn real-world skills with Sitaram Lodhi. High-quality tutorials on programming, AI, and security designed for beginners to advanced learners.</p>
+        <a href="#courses" class="explore-btn">Explore Courses</a>
+    </header>
+
+    <section id="courses" class="courses-section">
+        <h2>Our Premium Courses</h2>
+        <div class="course-grid">
+            
+            <div class="course-card">
+                <img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Cybersecurity" class="course-img">
+                <div class="course-content">
+                    <span class="course-category">Cybersecurity</span>
+                    <h3 class="course-title">Ethical Hacking & Termux Mastery</h3>
+                    <p class="course-desc">Mobile-based environment mein network scanning aur security vulnerabilities identify karna seekhein. No root needed.</p>
+                    <div class="course-price">₹499 <span class="original-price">₹999</span></div>
+                    <button class="buy-btn" onclick="payWithUPI('499', 'Ethical Hacking Course')">Buy Now</button>
+                </div>
+            </div>
+
+            <div class="course-card">
+                <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="AI Mastery" class="course-img">
+                <div class="course-content">
+                    <span class="course-category">Artificial Intelligence</span>
+                    <h3 class="course-title">AI Fundamentals for Creators</h3>
+                    <p class="course-desc">Machine learning kaise sochti hai aur AI tools ka use karke apne digital projects aur scripts ko kaise grow karein.</p>
+                    <div class="course-price">₹299 <span class="original-price">₹599</span></div>
+                    <button class="buy-btn" onclick="payWithUPI('299', 'AI Fundamentals Course')">Buy Now</button>
+                </div>
+            </div>
+
+            <div class="course-card">
+                <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Web Development" class="course-img">
+                <div class="course-content">
+                    <span class="course-category">Web Development</span>
+                    <h3 class="course-title">Website Creation & Monetization</h3>
+                    <p class="course-desc">Khud ka platform banayein, ad placements integrate karein aur membership paywalls setup karna seekhein.</p>
+                    <div class="course-price">₹799 <span class="original-price">₹1499</span></div>
+                    <button class="buy-btn" onclick="payWithUPI('799', 'Web Dev Course')">Buy Now</button>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <footer id="about">
+        <h2>SRindia Educational Platform</h2>
+        <p style="margin-top: 10px; color: #bbb;">Designed for the next generation of digital creators.</p>
+        <p style="margin-top: 20px;">&copy; 2026 Sitaram Lodhi. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        function payWithUPI(amount, courseName) {
+            // Sitaram ki UPI ID
+            const upiID = "8305462936@ibl";
+            const payeeName = "SRindia";
+            
+            // Mobile devices ke liye UPI link generate karna
+            const upiLink = `upi://pay?pa=${upiID}&pn=${payeeName}&tn=Payment for ${courseName}&am=${amount}&cu=INR`;
+            
+            // User mobile par hai ya PC par, check karte hain
+            if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
+                // Mobile me direct UPI App open karega
+                window.location.href = upiLink;
+            } else {
+                // PC par user ko alert dikhayega
+                alert(`Aap PC par hain. Kripya apne mobile ke UPI app se ₹${amount} is UPI ID par bhejein: \n\n${upiID}\n\nPayment successful hone ke baad admin (Sitaram) aapko course access de denge.`);
+            }
+        }
+    </script>
+</body>
+</html>
