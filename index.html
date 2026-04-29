@@ -3,101 +3,172 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SRindia - Premium Learning Platform</title>
+    <title>SRindia - Admin Dashboard</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: #f8f9fa; color: #333; }
+        body { background-color: #f4f7f6; color: #333; display: flex; height: 100vh; overflow: hidden; }
         
-        /* Navbar */
-        nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 50px; background: #fff; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-        .logo { font-size: 28px; font-weight: bold; color: #6610f2; letter-spacing: 1px; }
-        .nav-links button { background: #6610f2; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-size: 16px; font-weight: bold; transition: 0.3s; }
-        .nav-links button:hover { background: #520dc2; }
-
-        /* Hero Section */
-        .hero { text-align: center; padding: 100px 20px; background: linear-gradient(135deg, #6610f2, #0d6efd); color: white; }
-        .hero h1 { font-size: 50px; margin-bottom: 20px; }
-        .hero p { font-size: 20px; margin-bottom: 30px; max-width: 600px; margin-left: auto; margin-right: auto; }
-
-        /* Login Modal (Hidden by default) */
-        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); justify-content: center; align-items: center; }
-        .login-box { background: #fff; padding: 40px; border-radius: 10px; width: 400px; text-align: center; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
-        .close-btn { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; color: #888; }
+        /* Login Screen */
+        #loginScreen { position: fixed; width: 100%; height: 100%; background: linear-gradient(135deg, #6610f2, #0d6efd); display: flex; justify-content: center; align-items: center; z-index: 1000; }
+        .login-box { background: #fff; padding: 40px; border-radius: 10px; width: 400px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
         .login-box h2 { margin-bottom: 20px; color: #333; }
         .login-box input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; font-size: 16px; }
-        .login-box button { width: 100%; padding: 12px; background: #28a745; color: white; border: none; border-radius: 5px; font-size: 18px; cursor: pointer; margin-top: 10px; }
-        .login-box button:hover { background: #218838; }
+        .login-box button { width: 100%; padding: 12px; background: #6610f2; color: white; border: none; border-radius: 5px; font-size: 18px; cursor: pointer; margin-top: 10px; }
+        
+        /* Dashboard Layout */
+        #dashboardLayout { display: none; width: 100%; height: 100%; }
+        
+        /* Sidebar */
+        .sidebar { width: 250px; background: #2c3e50; color: white; padding-top: 20px; display: flex; flex-direction: column; }
+        .sidebar h2 { text-align: center; margin-bottom: 30px; color: #1abc9c; letter-spacing: 2px; }
+        .nav-btn { padding: 15px 20px; background: none; border: none; color: #ecf0f1; text-align: left; font-size: 16px; cursor: pointer; transition: 0.3s; width: 100%; border-left: 4px solid transparent; }
+        .nav-btn:hover, .nav-btn.active { background: #34495e; border-left: 4px solid #1abc9c; }
+        .logout-btn { margin-top: auto; background: #e74c3c; border-left: none; text-align: center; }
+        .logout-btn:hover { background: #c0392b; }
 
-        /* Admin Dashboard Demo (Hidden by default) */
-        .admin-dashboard { display: none; padding: 50px; text-align: center; }
-        .admin-dashboard h2 { color: #28a745; margin-bottom: 20px; }
-        .admin-card { background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); display: inline-block; }
+        /* Main Content */
+        .main-content { flex: 1; padding: 30px; overflow-y: auto; }
+        .topbar { display: flex; justify-content: space-between; align-items: center; background: white; padding: 15px 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); margin-bottom: 20px; }
+        
+        /* Sections */
+        .section { display: none; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .section.active { display: block; }
+        .section h3 { margin-bottom: 20px; color: #2c3e50; border-bottom: 2px solid #ecf0f1; padding-bottom: 10px; }
+
+        /* Form Elements */
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: bold; color: #555; }
+        .form-group input, .form-group textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; }
+        .save-btn { background: #28a745; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; }
+        
+        /* Stats Cards */
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 20px; }
+        .stat-card { background: linear-gradient(135deg, #1abc9c, #16a085); color: white; padding: 20px; border-radius: 8px; text-align: center; }
+        .stat-card h4 { font-size: 18px; margin-bottom: 10px; }
+        .stat-card p { font-size: 24px; font-weight: bold; }
+
     </style>
 </head>
 <body>
 
-    <nav>
-        <div class="logo">SRindia</div>
-        <div class="nav-links">
-            <button onclick="openLogin()">Admin Login</button>
-        </div>
-    </nav>
-
-    <div id="mainContent">
-        <header class="hero">
-            <h1>Welcome to SRindia</h1>
-            <p>India's Premium Platform for E-Learning, Skill Development, and High-Quality Content.</p>
-        </header>
-    </div>
-
-    <div id="adminPanel" class="admin-dashboard">
-        <h2>Welcome Admin (Sitaram)</h2>
-        <div class="admin-card">
-            <h3>Website Control Panel</h3>
-            <p>Yeh ek demo admin area hai. Real working ke liye isko database se connect karna hoga.</p>
-            <br>
-            <button onclick="logout()" style="padding: 10px 20px; background: #dc3545; color: white; border: none; border-radius: 5px; cursor: pointer;">Logout</button>
-        </div>
-    </div>
-
-    <div id="loginModal" class="modal-overlay">
+    <div id="loginScreen">
         <div class="login-box">
-            <span class="close-btn" onclick="closeLogin()">&times;</span>
-            <h2>Admin Login</h2>
-            <input type="email" id="email" placeholder="Email Address" required>
-            <input type="password" id="password" placeholder="Password" required>
-            <button onclick="checkLogin()">Login to Dashboard</button>
+            <h2>SRindia Login</h2>
+            <input type="email" id="email" value="satendrlodhi711@gmail.com" placeholder="Email Address">
+            <input type="password" id="password" value="Seetaram12" placeholder="Password">
+            <button onclick="login()">Login</button>
+        </div>
+    </div>
+
+    <div id="dashboardLayout">
+        
+        <div class="sidebar">
+            <h2>SRindia</h2>
+            <button class="nav-btn active" onclick="showSection('home')">Dashboard Home</button>
+            <button class="nav-btn" onclick="showSection('editContent')">Edit Content</button>
+            <button class="nav-btn" onclick="showSection('paymentSettings')">Payment & UPI</button>
+            <button class="nav-btn logout-btn" onclick="logout()">Logout</button>
+        </div>
+
+        <div class="main-content">
+            <div class="topbar">
+                <h2>Welcome, Sitaram</h2>
+                <span>Admin Panel</span>
+            </div>
+
+            <div id="home" class="section active">
+                <h3>Dashboard Overview</h3>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h4>Total Users</h4>
+                        <p>1,245</p>
+                    </div>
+                    <div class="stat-card" style="background: linear-gradient(135deg, #3498db, #2980b9);">
+                        <h4>Active Courses</h4>
+                        <p>8</p>
+                    </div>
+                    <div class="stat-card" style="background: linear-gradient(135deg, #9b59b6, #8e44ad);">
+                        <h4>Total Earnings</h4>
+                        <p>₹45,000</p>
+                    </div>
+                </div>
+                <p>Yahan se aap apni website ka pura data dekh sakte hain.</p>
+            </div>
+
+            <div id="editContent" class="section">
+                <h3>Edit Website Details</h3>
+                <div class="form-group">
+                    <label>Website Title</label>
+                    <input type="text" id="siteTitle" value="SRindia - Premium Platform">
+                </div>
+                <div class="form-group">
+                    <label>Main Headline</label>
+                    <input type="text" id="siteHeadline" value="Learn the best skills with Sitaram">
+                </div>
+                <div class="form-group">
+                    <label>About Us Description</label>
+                    <textarea rows="4">Welcome to SRindia. This is the best place to learn and earn.</textarea>
+                </div>
+                <button class="save-btn" onclick="saveData()">Save Changes</button>
+            </div>
+
+            <div id="paymentSettings" class="section">
+                <h3>Payment & Gateway Integration</h3>
+                <p style="margin-bottom: 20px; color: #e74c3c; font-size: 14px;">Note: Real payments auto-verify karne ke liye API zaroori hai.</p>
+                
+                <div class="form-group">
+                    <label>UPI ID (For Direct Payments)</label>
+                    <input type="text" id="upiId" value="8305462936@ibl">
+                </div>
+                <div class="form-group">
+                    <label>Payment Gateway Key (e.g., Razorpay/Cashfree)</label>
+                    <input type="text" placeholder="Enter API Key here">
+                </div>
+                <button class="save-btn" onclick="saveData()">Update Payment Details</button>
+            </div>
+
         </div>
     </div>
 
     <script>
-        // Modal Control
-        function openLogin() { document.getElementById('loginModal').style.display = 'flex'; }
-        function closeLogin() { document.getElementById('loginModal').style.display = 'none'; }
-
-        // DEMO Login Logic (NEVER use this method in a real published website)
-        function checkLogin() {
+        // Login Logic
+        function login() {
             let email = document.getElementById('email').value;
             let pass = document.getElementById('password').value;
 
             if (email === "satendrlodhi711@gmail.com" && pass === "Seetaram12") {
-                alert("Login Successful! Welcome to SRindia Admin Panel.");
-                closeLogin();
-                document.getElementById('mainContent').style.display = 'none';
-                document.getElementById('adminPanel').style.display = 'block';
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('dashboardLayout').style.display = 'flex';
             } else {
-                alert("Wrong Email or Password!");
+                alert("Incorrect Email or Password!");
             }
         }
 
         // Logout Logic
         function logout() {
-            document.getElementById('adminPanel').style.display = 'none';
-            document.getElementById('mainContent').style.display = 'block';
-            document.getElementById('email').value = '';
-            document.getElementById('password').value = '';
+            document.getElementById('dashboardLayout').style.display = 'none';
+            document.getElementById('loginScreen').style.display = 'flex';
+        }
+
+        // Section Navigation Logic
+        function showSection(sectionId) {
+            // Hide all sections
+            let sections = document.querySelectorAll('.section');
+            sections.forEach(sec => sec.classList.remove('active'));
+            
+            // Remove active class from all buttons
+            let btns = document.querySelectorAll('.nav-btn');
+            btns.forEach(btn => btn.classList.remove('active'));
+
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // Dummy Save Function
+        function saveData() {
+            alert("Changes Saved! (Note: Yeh frontend demo hai, data refresh karne par wapas pehle jaisa ho jayega. Real saving ke liye Database chahiye.)");
         }
     </script>
-
 </body>
 </html>
