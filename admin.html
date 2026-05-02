@@ -3,132 +3,152 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SRindia Admin - Live Control</title>
+    <title>SRindia Admin Pro - Full Control</title>
     <style>
+        :root { --primary: #6366f1; --bg: #f8fafc; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
-        body { background-color: #f0f2f5; color: #333; min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 20px; }
-        
-        /* Login Box */
-        #loginBox { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 100%; max-width: 400px; text-align: center; margin-top: 50px; }
-        input, textarea { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; font-size: 15px; }
-        button { width: 100%; padding: 12px; background: #6610f2; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; margin-top: 10px; }
-        
-        /* Dashboard Area */
-        #adminDashboard { display: none; width: 100%; max-width: 800px; }
-        .card { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 20px; }
-        .course-item { display: flex; justify-content: space-between; align-items: center; padding: 15px; border-bottom: 1px solid #eee; }
-        .btn-delete { background: #ff4d4d; width: auto; padding: 5px 15px; font-size: 13px; }
-        .btn-logout { background: #555; width: auto; margin-bottom: 20px; }
+        body { background: var(--bg); padding: 20px; }
+        .container { max-width: 900px; margin: auto; }
+        .card { background: white; padding: 20px; border-radius: 15px; shadow: 0 4px 20px rgba(0,0,0,0.08); margin-bottom: 20px; border: 1px solid #e2e8f0; }
+        h2, h3 { margin-bottom: 15px; color: #1e293b; }
+        input, textarea { width: 100%; padding: 12px; margin-bottom: 10px; border: 1px solid #cbd5e1; border-radius: 8px; }
+        button { padding: 12px 20px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; transition: 0.3s; width: 100%; }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-success { background: #22c55e; color: white; }
+        .btn-edit { background: #f59e0b; color: white; width: auto; padding: 5px 15px; margin-right: 5px; }
+        .btn-delete { background: #ef4444; color: white; width: auto; padding: 5px 15px; }
+        .course-item { display: flex; justify-content: space-between; align-items: center; padding: 15px; border-bottom: 1px solid #f1f5f9; }
+        #loginBox { max-width: 400px; margin: 100px auto; text-align: center; }
     </style>
-
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 </head>
 <body>
-
-    <div id="loginBox">
-        <h2 style="color:#6610f2">SRindia Admin</h2>
-        <input type="email" id="adminEmail" placeholder="Email Address">
-        <input type="password" id="adminPass" placeholder="Password">
-        <button onclick="login()">Login to Dashboard</button>
-        <p id="loginError" style="color:red; display:none; margin-top:10px;">Login failed!</p>
+    <div id="loginBox" class="card">
+        <h2>SRindia Admin</h2>
+        <input type="email" id="email" placeholder="Email">
+        <input type="password" id="pass" placeholder="Password">
+        <button class="btn-primary" onclick="login()">Login</button>
     </div>
 
-    <div id="adminDashboard">
-        <button class="btn-logout" onclick="logout()">Logout</button>
-        
+    <div id="dashboard" class="container" style="display:none;">
         <div class="card">
-            <h3>Add New Course (Live)</h3>
-            <input type="text" id="cTitle" placeholder="Course Title">
-            <input type="text" id="cPrice" placeholder="Price (₹)">
-            <input type="text" id="cOldPrice" placeholder="Old Price (₹)">
-            <input type="text" id="cImg" placeholder="Image URL (Link)">
-            <textarea id="cDesc" placeholder="Small Description..."></textarea>
-            <button style="background:#28a745" onclick="addCourse()">+ Add to Website</button>
+            <h3>Website Settings (Logo & Title)</h3>
+            <input type="text" id="setLogo" placeholder="Logo Image URL (Link)">
+            <input type="text" id="setName" placeholder="Website Name (e.g. SRindia)">
+            <button class="btn-primary" onclick="saveSettings()">Update Website Branding</button>
         </div>
 
         <div class="card">
-            <h3>Active Courses on Website</h3>
-            <div id="coursesContainer">Loading courses...</div>
+            <h3 id="formTitle">Add/Edit Course</h3>
+            <input type="hidden" id="courseId">
+            <input type="text" id="cTitle" placeholder="Course Title">
+            <input type="text" id="cPrice" placeholder="New Price (₹)">
+            <input type="text" id="cOldPrice" placeholder="Old Price (₹)">
+            <input type="text" id="cImg" placeholder="Image URL">
+            <textarea id="cDesc" placeholder="Description"></textarea>
+            <button id="submitBtn" class="btn-success" onclick="saveCourse()">Save Course & Live Update</button>
+            <button id="cancelBtn" style="display:none; margin-top:5px; background:#64748b; color:white;" onclick="resetForm()">Cancel Edit</button>
+        </div>
+
+        <div class="card">
+            <h3>Manage Courses & Prices</h3>
+            <div id="courseList">Loading...</div>
         </div>
     </div>
 
     <script>
-        // FIREBASE CONFIG (Sitaram's Config)
         const firebaseConfig = {
             apiKey: "AIzaSyBs4mFioKL9uztdSU90-iFXvvBU-8K15Mg",
             authDomain: "srindia-1f973.firebaseapp.com",
             databaseURL: "https://srindia-1f973-default-rtdb.firebaseio.com",
-            projectId: "srindia-1f973",
-            storageBucket: "srindia-1f973.firebasestorage.app",
-            messagingSenderId: "1046746667707",
-            appId: "1:1046746667707:web:aba400a8ad19fe9f49a79e"
+            projectId: "srindia-1f973"
         };
-
         firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
         const db = firebase.database();
+        const auth = firebase.auth();
 
-        // 1. Auth Listener
+        function login() {
+            auth.signInWithEmailAndPassword(document.getElementById('email').value, document.getElementById('pass').value);
+        }
+
         auth.onAuthStateChanged(user => {
-            if (user) {
+            if(user) {
                 document.getElementById('loginBox').style.display = 'none';
-                document.getElementById('adminDashboard').style.display = 'block';
-                fetchCourses();
-            } else {
-                document.getElementById('loginBox').style.display = 'block';
-                document.getElementById('adminDashboard').style.display = 'none';
+                document.getElementById('dashboard').style.display = 'block';
+                loadData();
             }
         });
 
-        // 2. Login Function
-        function login() {
-            const email = document.getElementById('adminEmail').value;
-            const pass = document.getElementById('adminPass').value;
-            auth.signInWithEmailAndPassword(email, pass).catch(e => alert(e.message));
+        function saveSettings() {
+            db.ref('settings').set({
+                logo: document.getElementById('setLogo').value,
+                name: document.getElementById('setName').value
+            }).then(() => alert("Website Branding Updated!"));
         }
 
-        // 3. Logout
-        function logout() { auth.signOut(); }
+        function saveCourse() {
+            const id = document.getElementById('courseId').value;
+            const data = {
+                title: document.getElementById('cTitle').value,
+                price: document.getElementById('cPrice').value,
+                oldPrice: document.getElementById('cOldPrice').value,
+                img: document.getElementById('cImg').value,
+                desc: document.getElementById('cDesc').value
+            };
+            if(id) db.ref('courses/'+id).update(data);
+            else db.ref('courses').push(data);
+            resetForm();
+        }
 
-        // 4. Add Course to Firebase
-        function addCourse() {
-            const title = document.getElementById('cTitle').value;
-            const price = document.getElementById('cPrice').value;
-            const oldPrice = document.getElementById('cOldPrice').value;
-            const img = document.getElementById('cImg').value;
-            const desc = document.getElementById('cDesc').value;
-
-            if(!title || !price) return alert("Title and Price are required!");
-
-            db.ref('courses').push({ title, price, oldPrice, img, desc })
-            .then(() => {
-                alert("Course added Live!");
-                document.querySelectorAll('input, textarea').forEach(i => i.value = '');
+        function loadData() {
+            db.ref('settings').on('value', s => {
+                if(s.exists()) {
+                    document.getElementById('setLogo').value = s.val().logo;
+                    document.getElementById('setName').value = s.val().name;
+                }
             });
-        }
-
-        // 5. Fetch and Delete Courses
-        function fetchCourses() {
-            db.ref('courses').on('value', snapshot => {
-                const container = document.getElementById('coursesContainer');
-                container.innerHTML = '';
-                snapshot.forEach(child => {
-                    const data = child.val();
-                    container.innerHTML += `
-                        <div class="course-item">
-                            <span><strong>${data.title}</strong> (₹${data.price})</span>
-                            <button class="btn-delete" onclick="deleteCourse('${child.key}')">Delete</button>
-                        </div>`;
+            db.ref('courses').on('value', s => {
+                const list = document.getElementById('courseList');
+                list.innerHTML = '';
+                s.forEach(child => {
+                    const c = child.val();
+                    list.innerHTML += `<div class="course-item">
+                        <span><strong>${c.title}</strong> - ₹${c.price}</span>
+                        <div>
+                            <button class="btn-edit" onclick="editCourse('${child.key}')">Edit Price</button>
+                            <button class="btn-delete" onclick="deleteCourse('${child.key}')">X</button>
+                        </div>
+                    </div>`;
                 });
             });
         }
 
-        function deleteCourse(id) {
-            if(confirm("Are you sure?")) db.ref('courses/' + id).remove();
+        function editCourse(id) {
+            db.ref('courses/'+id).once('value', s => {
+                const c = s.val();
+                document.getElementById('courseId').value = id;
+                document.getElementById('cTitle').value = c.title;
+                document.getElementById('cPrice').value = c.price;
+                document.getElementById('cOldPrice').value = c.oldPrice;
+                document.getElementById('cImg').value = c.img;
+                document.getElementById('cDesc').value = c.desc;
+                document.getElementById('formTitle').innerText = "Editing: " + c.title;
+                document.getElementById('submitBtn').innerText = "Update Price Now";
+                document.getElementById('cancelBtn').style.display = 'block';
+            });
         }
+
+        function resetForm() {
+            document.querySelectorAll('input, textarea').forEach(i => i.value = '');
+            document.getElementById('courseId').value = '';
+            document.getElementById('formTitle').innerText = "Add/Edit Course";
+            document.getElementById('submitBtn').innerText = "Save Course & Live Update";
+            document.getElementById('cancelBtn').style.display = 'none';
+        }
+
+        function deleteCourse(id) { if(confirm("Delete?")) db.ref('courses/'+id).remove(); }
     </script>
 </body>
 </html>
-
